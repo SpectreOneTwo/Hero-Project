@@ -8,17 +8,15 @@ public class Egg : MonoBehaviour
     {
         if (other.CompareTag("Enemy"))
         {
-            HeroMovement hero = GameObject.FindWithTag("Hero").GetComponent<HeroMovement>();
-            EnemyBehavior enemy = GameObject.FindWithTag("Enemy").GetComponent<EnemyBehavior>();
-            hero.EggDestroyed();
+            Hero hero = GameObject.FindWithTag("Hero").GetComponent<Hero>();
             Destroy(gameObject);
         }
     }
 
     private void OnBecameInvisible()
     {
-        HeroMovement heroMovement = FindObjectOfType<HeroMovement>();
+        Hero hero = FindObjectOfType<Hero>();
         Destroy(gameObject);
-        heroMovement.EggDestroyed();
+        hero.EggDestroyed();
     }
 }
