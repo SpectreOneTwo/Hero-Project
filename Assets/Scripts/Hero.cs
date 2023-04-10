@@ -27,7 +27,10 @@ public class Hero : MonoBehaviour
     public int numberOfEnemiesTouched = 0;
     public int numberOfEnemiesDestroyed = 0;
 
+    public static Hero instance;
+
     private float timeSinceLastEnemySpawned = 0.0f;  // time since the last enemy was spawned
+
 
 
     private void Start()
@@ -93,8 +96,8 @@ public class Hero : MonoBehaviour
     private void CheckBounds()
     {
         Vector3 currentPosition = transform.position;
-        currentPosition.x = Mathf.Clamp(currentPosition.x, -90f, 90f);
-        currentPosition.y = Mathf.Clamp(currentPosition.y, -90f, 90f);
+        currentPosition.x = Mathf.Clamp(currentPosition.x, -148f, 148f);
+        currentPosition.y = Mathf.Clamp(currentPosition.y, -98f, 98f);
         transform.position = currentPosition;
     }
 
@@ -102,7 +105,7 @@ public class Hero : MonoBehaviour
     {
         timeSinceLastEggSpawned += Time.deltaTime;
 
-        if (Input.GetKeyDown(KeyCode.Space) && timeSinceLastEggSpawned >= eggSpawnRate && numberOfEggsInWorld < maxNumberOfEggsInWorld)
+        if (Input.GetKey(KeyCode.Space) && timeSinceLastEggSpawned >= eggSpawnRate && numberOfEggsInWorld < maxNumberOfEggsInWorld)
         {
             GameObject egg = Instantiate(eggPrefab, transform.position, Quaternion.identity);
             egg.transform.up = transform.up;
@@ -113,7 +116,7 @@ public class Hero : MonoBehaviour
         }
     }
 
-    void SpawnEnemy()
+    private void SpawnEnemy()
     {
         timeSinceLastEnemySpawned += Time.deltaTime;
         float x = Random.Range(-90.0f, 90.0f);
@@ -121,11 +124,11 @@ public class Hero : MonoBehaviour
         Vector3 position = new Vector3(x, y, 0);
         if (timeSinceLastEnemySpawned >= enemyspawnDelay && numberOfEnemiesInWorld < maxEnemies)
         {
-            GameObject enemy = Instantiate(enemyPrefab, position, Quaternion.identity);
+            GameObject enemy = Instantiate(enemyPrefab, position, Quaternion.Euler(0, 0, Random.Range(0, 360)));
             numberOfEnemiesInWorld++;
             Rigidbody2D enemyRigidbody = enemy.GetComponent<Rigidbody2D>();
             timeSinceLastEnemySpawned = 0.0f;
-        } 
+        }
     }
 
     public void EggDestroyed()
